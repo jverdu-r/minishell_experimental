@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:14:37 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/09/19 10:24:13 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:26:28 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	minishell_loop(t_toolbox *tools)
 			if (!handle_quotes(tools->args))
 			{
 				token_reader(tools);
-				parser(tools);
+				tools->sp_cmds = parser(tools);
 			}
 			tools_reload(tools);
 		}
