@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:14:37 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/09/26 12:26:28 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:57:54 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	minishell_loop(t_toolbox *tools)
 		exit = 0;
 		signals_workout();
 		exit = check_input(tools);
+		//tokenizer(tools->args);
 		if (!tools->args && exit == 0)
 			return (exit_code());
 		else if (tools->args && ft_strcmp(tools->args, "") == 0)
@@ -54,7 +55,8 @@ int	minishell_loop(t_toolbox *tools)
 			if (!handle_quotes(tools->args))
 			{
 				token_reader(tools);
-				tools->sp_cmds = parser(tools);
+				lexer_show(tools->lexer_list);
+				//parser(tools);
 			}
 			tools_reload(tools);
 		}

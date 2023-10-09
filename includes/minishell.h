@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/09/20 11:13:37 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:59:57 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,18 @@
 #include <readline/history.h>
 #include "libft/libft.h"
 
+typedef enum	s_bool
+{
+	FALSE = 0,
+	TRUE = 1
+}	t_bool;
 typedef enum	s_token
 {
 	PIPE = 1,
 	LESS,
 	LESS_LESS,
 	GREAT,
-	GREAT_GREAT,
+	GREAT_GREAT
 }	t_token;
 
 typedef struct	s_lexer

@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 14:28:22 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/08/09 08:52:19 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/09 09:48:55 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	lexer_show(t_lexer *list) //only for testing
 	while (tmp)
 	{
 		if (tmp->str)
-			printf("%s\n", tmp->str);
+			printf("str: %s\n", tmp->str);
 		if (tmp->token)
-			printf("%d\n", tmp->token);
+			printf("token: %d\n", tmp->token);
 		tmp = tmp->next;
 	}
 	printf("\n");
