@@ -55,7 +55,7 @@ int	minishell_loop(t_toolbox *tools)
 			if (!handle_quotes(tools->args))
 			{
 				token_reader(tools);
-				lexer_show(tools->lexer_list);
+				//lexer_show(tools->lexer_list);
 				//parser(tools);
 			}
 			tools_reload(tools);

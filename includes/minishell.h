@@ -22,20 +22,13 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "libft/libft.h"
+#include "tokens.h"
 
 typedef enum	s_bool
 {
 	FALSE = 0,
 	TRUE = 1
 }	t_bool;
-typedef enum	s_token
-{
-	PIPE = 1,
-	LESS,
-	LESS_LESS,
-	GREAT,
-	GREAT_GREAT
-}	t_token;
 
 typedef struct	s_lexer
 {
@@ -74,6 +67,9 @@ typedef struct	s_p_toolbox
 	int			num_redirections;
 	t_toolbox	*tools;
 }	t_p_toolbox;
+
+//test
+t_command   *cmd_extract(t_lexer *list);
 
 //signal functions
 void	signals_workout(void);
@@ -126,6 +122,7 @@ int		handle_quotes(char *input);
 int		check_input(t_toolbox *tools);
 int		check_quotes(char *str);
 int		exit_code(void);
+t_bool switch_bool(t_bool bool);
 
 //error functions
 int		error_msg(char *msg);

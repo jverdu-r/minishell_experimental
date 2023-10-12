@@ -92,11 +92,15 @@ int	token_reader(t_toolbox *tools)
 {
 	t_bool	qt[2];
 	int	st_nd[2];
+	t_command	*cmd;
 
 	qt[0] = FALSE;
 	qt[1] = FALSE;
 	st_nd[0] = 0;
 	st_nd[1] = 0;
 	read_words(tools->args, &tools->lexer_list, qt, st_nd);
+	cmd = cmd_extract(tools->lexer_list);
+	cmd_show(cmd);
+	cmd_free(cmd);
 	return (1);
 }

@@ -61,10 +61,12 @@ void	lexer_show(t_lexer *list) //only for testing
 	printf("\n");
 	while (tmp)
 	{
+		printf("---node---\n\n");
 		if (tmp->str)
 			printf("str: %s\n", tmp->str);
 		if (tmp->token)
 			printf("token: %d\n", tmp->token);
+		printf("\n---end node---\n");
 		tmp = tmp->next;
 	}
 	printf("\n");
