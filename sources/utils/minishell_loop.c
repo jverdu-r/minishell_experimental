@@ -44,7 +44,6 @@ int	minishell_loop(t_toolbox *tools)
 		exit = 0;
 		signals_workout();
 		exit = check_input(tools);
-		//tokenizer(tools->args);
 		if (!tools->args && exit == 0)
 			return (exit_code());
 		else if (tools->args && ft_strcmp(tools->args, "") == 0)
@@ -55,8 +54,12 @@ int	minishell_loop(t_toolbox *tools)
 			if (!handle_quotes(tools->args))
 			{
 				token_reader(tools);
-				//lexer_show(tools->lexer_list);
-				//parser(tools);
+				if (!check_syntax(tools->lexer_list))
+				{
+					lexer_show(tools->lexer_list);
+					//parser(tools);
+				}
+					
 			}
 			tools_reload(tools);
 		}

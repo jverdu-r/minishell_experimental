@@ -23,53 +23,11 @@
 #include <readline/history.h>
 #include "libft/libft.h"
 #include "tokens.h"
-
-typedef enum	s_bool
-{
-	FALSE = 0,
-	TRUE = 1
-}	t_bool;
-
-typedef struct	s_lexer
-{
-	char			*str;
-	t_token			token;
-	int				index;
-	struct s_lexer	*next;
-	struct s_lexer	*prev;
-}	t_lexer;
-
-typedef struct	s_sp_cmds
-{
-	char				**cmd;
-	int					token;
-	char				*file;
-	struct s_sp_cmds	*next;
-	struct s_sp_cmds	*prev;
-}	t_sp_cmds;
-
-typedef struct	s_toolbox
-{
-	char		*args;
-	char		**env;
-	char		**sort_env;
-	char		*env_rute;
-	char		*pwd;
-	char		*old_pwd;
-	t_sp_cmds	*sp_cmds;
-	t_lexer		*lexer_list;
-}	t_toolbox;
-
-typedef struct	s_p_toolbox
-{
-	t_lexer		*lexer_list;
-	t_lexer		*redirections;
-	int			num_redirections;
-	t_toolbox	*tools;
-}	t_p_toolbox;
+#include "structs.h"
 
 //test
 t_command   *cmd_extract(t_lexer *list);
+int check_syntax(t_lexer *tk_list);
 
 //signal functions
 void	signals_workout(void);

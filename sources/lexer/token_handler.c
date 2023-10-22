@@ -6,16 +6,36 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:40:51 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/07/25 09:03:39 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:12:13 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/minishell.h"
+
+t_token	check_token(char *tk, int i)
+{
+	if (tk[i] == '|')
+		return (PIPE);
+	if (tk[i] == '<')
+	{
+		if (tk[i + 1] == '<')
+			return (LESS_LESS);
+		else
+			return (LESS);
+	}
+	if (tk[i] == '>')
+	{
+		if (tk[i + 1] == '>')
+			return (GREAT_GREAT);
+		else
+			return (GREAT);
+	}
+	return (0);
+}
 
 int	token_handler(t_toolbox *tools, int i)
 {
-	t_token tk;
+	t_token	tk;
 
 	tk = check_token(tools->args, i);
 	if (tk == LESS_LESS || tk == GREAT_GREAT)
@@ -30,5 +50,3 @@ int	token_handler(t_toolbox *tools, int i)
 	}
 	return (0);
 }
-
-

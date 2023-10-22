@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 14:28:22 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/09 09:48:55 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:18:55 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	lexer_length(t_lexer *list)
 {
 	int			i;
-	t_lexer	*aux;
+	t_lexer		*aux;
 
 	if (!list)
 		return (0);
@@ -47,13 +47,12 @@ void	lexer_free(t_lexer *list)
 		{
 			if (list->token == 0)
 				free(list->str);
-
 		}
 		free(list);
 	}
 }
 
-void	lexer_show(t_lexer *list) //only for testing
+void	lexer_show(t_lexer *list)
 {
 	t_lexer	*tmp;
 
@@ -63,7 +62,12 @@ void	lexer_show(t_lexer *list) //only for testing
 	{
 		printf("---node---\n\n");
 		if (tmp->str)
-			printf("str: %s\n", tmp->str);
+		{
+			if (!ft_strcmp(tmp->str, " "))
+				printf("space\n");
+			else
+				printf("str: %s\n", tmp->str);
+		}
 		if (tmp->token)
 			printf("token: %d\n", tmp->token);
 		printf("\n---end node---\n");
