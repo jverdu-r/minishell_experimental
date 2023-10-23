@@ -1,108 +1,103 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_leg.c                                       :+:      :+:    :+:   */
+/*   parser_in_progress_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 18:29:05 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/07 18:29:07 by jverdu-r         ###   ########.fr       */
+/*   Created: 2023/10/23 18:38:55 by jverdu-r          #+#    #+#             */
+/*   Updated: 2023/10/23 18:38:57 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_p_toolbox	init_p_tools(t_toolbox *tools)
+t_command   *cmd_list(t_lexer *list)
 {
-	t_p_toolbox	p_tools;
+    t_command *cmd;
+    t_lexer   *aux;
 
-	p_tools.lexer_list = tools->lexer_list;
-	p_tools.redirections = NULL;
-	p_tools.redirections = 0;
-	p_tools.tools = tools;
-	return (p_tools);
+    cmd = NULL;
+    aux = list;
+    while (aux)
+    {
+        if (aux->prev == NULL || aux->prev->token == PIPE)
+            comm_addback(&cmd, init_cmd());
+        else
+        aux = aux->next;
+    }
+    while (cmd->prev)
+    {
+        cmd = cmd->prev;
+    }
+    return (cmd);
 }
 
-int	word_count(t_lexer *list)
+t_lexer *redir_add(t_command *cmd, t_lexer *list)
 {
-	int	i;
-
-	if (!list)
-		return (0);
-	i = 0;
-	while (list && list->token == 0)
-	{
-		i++;
-		list = list->next;
-	}
-	return (i);
+    if (list->token == LESS)
+        cmd->in_files = redir_addback(&cmd->in_files, redir_new(ft_strdup(list->next)));
+    if (list->token == GREAT)
+        cmd->out_files = redir_addback(&cmd->in_files, redir_new(ft_strdup(list->next)));
+    if (list->token == LESS_LESS)
+    {
+        cmd->limiter = ft_strdup(list->next);
+        cmd->heredoc = 1;
+    }
+    if (list->token == GREAT_GREAT)
+        cmd->append = ft_strdup(list->next);
+    list = list->next;
+    return (list);
 }
 
-char	**get_cmd(t_lexer *list)
+char    **get_args(t_lexer *list)
 {
-	int		w_count;
-	char	**cmd;
-	int		i;
+    t_lexer *aux;
+    int     i;
+    char    **args;
 
-	if (list == NULL)
-		return (NULL);
-	w_count = word_count(list);
-	cmd = ft_calloc(w_count + 1, sizeof(char *));
-	if (!cmd)
-		return (NULL);
-	i = 0;
-	while (list && list->token == 0)
-	{
-		cmd[i] = ft_strdup(list->str);
-		i++;
-		list = list->next;
-	}
-	cmd[i] = NULL;
-	return (cmd);
+    aux = list;
+    i = 0;
+    while(aux)
+    {
+        aux = aux->next;
+        i++;
+    }
+    aux = list;
+    args = malloc(sizeof(char *) * i);
+    if (!args)
+        return (NULL);
+    while(list)
+    {
+        args[i++] = ft_strdup(list->str);
+        list = list->next;
+    }
+    args[i] = 0;
+    lexer_free(aux);
+    return (args);
 }
 
-t_sp_cmds	*cmds_extract(t_lexer *list)
+t_command *parser(t_toolbox *tools)
 {
-	t_sp_cmds	*node;
-	char		**cmd;
-	t_lexer		*aux;
-	int			tk;
+    t_lexer     *aux;
+    t_command   *cmd;
+    t_lexer     *args;
 
-	if (!list)
-		return (NULL);
-	aux = list;
-	node = NULL;
-	while (aux)
-	{
-		tk = 0;
-		if (aux->token == 0)
-		{
-			cmd = get_cmd(aux);
-			while (aux && aux->token == 0)
-				aux = aux->next;
-		}
-		if (aux && aux->token > 0)
-			sp_cmds_addback(&node, sp_cmds_new(cmd, aux->token));
-		if (aux)
-			aux = aux->next;
-	}
-	sp_cmds_addback(&node, sp_cmds_new(cmd, tk));
-	return (node);
-}
-
-t_sp_cmds	*parser(t_toolbox *tools)
-{
-	t_sp_cmds	*node;
-	t_p_toolbox	p_tools;
-
-	// if (tools->lexer_list->token == PIPE)
-	// 	return (error_token(tools->lexer_list->token));
-	node = NULL;
-	p_tools = init_p_tools(tools);
-	node = cmds_extract(p_tools.lexer_list);
-	check_exp(node, tools);
-	cmd_trim(node);
-	sp_cmds_show(node);
-	sp_cmds_free(node);
-	return (node);
+    aux = tools->lexer_list;
+    cmd = cmd_list(aux);
+    args = NULL;
+    while (aux)
+    {
+        if (aux->prev->token == PIPE)
+            cmd = cmd->next;
+        else if (aux->token  && aux->token > 1)
+            aux = redir_add(cmd, aux);
+        else if (!cmd->cmd && !aux->token)
+            cmd->cmd = ft_strdup(aux->str);
+        else
+            lexer_addback(&args, lexer_new(aux->str, 0));
+        aux = aux->next;
+    }
+    cmd->args = get_args(args);
+    return (cmd);
 }

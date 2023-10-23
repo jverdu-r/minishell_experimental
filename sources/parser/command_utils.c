@@ -17,13 +17,15 @@ t_command	*init_cmd(void)
 	t_command	*cmd;
 
 	cmd = malloc(sizeof(t_command));
-	cmd->redir = 0;
 	cmd->cmd = NULL;
 	cmd->heredoc = 0;
+	cmd->append = NULL;
 	cmd->limiter = NULL;
 	cmd->args = NULL;
-	cmd->exp = 0;
-	cmd->files = NULL;
+	cmd->in_fd = 0;
+	cmd->in_files = NULL;
+	cmd->out_fd = 0;
+	cmd->out_files = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	return (cmd);
@@ -45,7 +47,7 @@ void	comm_addback(t_command **head, t_command *new)
 	}
 }
 
-void	cmd_free(t_command *cmd)
+void	cmd_free(t_command *cmd) //need a rework
 {
 	while (cmd->next)
 	{
@@ -75,88 +77,3 @@ void	cmd_free(t_command *cmd)
 	free (cmd);
 }
 
-void	cmd_show(t_command *cmd)
-{
-	int			i;
-	t_command	*aux;
-
-	i = 0;
-	aux = cmd;
-	while (aux)
-	{
-		printf("---command---\n\n");
-		if (aux->cmd)
-			printf("command: %s\n", aux->cmd);
-		if (aux->args)
-		{
-			i = 0;
-			while (aux->args[i])
-			{
-				if (aux->args[i])
-					printf("arg [%d]: %s\n", i, aux->args[i]);
-				else
-					printf("empty arg %d\n", i);
-				i++;
-			}
-		}
-		if (aux->redir)
-		{
-			if (aux->redir == LESS_LESS)
-			{
-				printf("heredoc\n");
-				printf("limiter: %s\n", aux->limiter);
-			}
-			else
-				printf("redir: %d\n", aux->redir);
-		}
-		printf("\n---end command---\n\n");
-		aux = aux->next;
-	}
-}
-
-//pipeline functions
-
-void	pipe_addback(t_pipeline **head, t_pipeline *new)
-{
-	t_pipeline *aux;
-
-	aux = *head;
-	if (*head == NULL)
-		*head = NULL;
-	else
-	{
-		while (aux->next)
-			aux = aux->next;
-		aux->next = new;
-		new->prev = aux;
-	}
-}
-
-t_pipeline	*init_pipe(void)
-{
-	t_pipeline	*new;
-
-	new = malloc(sizeof(t_pipeline));
-	new->cmd = NULL;
-	new->next = NULL;
-	new->prev = NULL;
-	return (new);
-}
-
-void	pipe_show(t_pipeline *pipe)
-{
-	t_pipeline	*aux;
-	int			i;
-
-	aux = pipe;
-	i = 0;
-	while (aux)
-	{
-		printf("---pipe node %d---\n\n", i);
-		if (aux->cmd)
-			cmd_show(aux->cmd);
-		printf("---end of pipe node %d---\n\n", i);
-		i++;
-		aux = aux->next;
-	}
-}

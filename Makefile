@@ -35,12 +35,10 @@ SRCS	=	sources/main.c \
 			sources/lexer/token_handler.c \
 			sources/lexer/token_reader.c \
 			sources/lexer/token_utils.c \
-			sources/lexer/command_utils.c \
+			sources/parser/command_utils.c \
+			sources/parser/parser.c \
 			sources/error/errors.c \
-			#sources/parser/parser.c \
-			sources/parser/parser_utils.c \
-			sources/parser/sp_cmds_utils_one.c \
-			sources/parser/sp_cmds_utils_two.c \
+			#sources/parser/parser_utils.c \
 			sources/expander/expander.c \
 			#sources/built-ins/echo.c \
 			#sources/built-ins/executor.c \
