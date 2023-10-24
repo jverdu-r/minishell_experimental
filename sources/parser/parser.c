@@ -23,29 +23,28 @@ t_command   *cmd_list(t_lexer *list)
     {
         if (aux->prev == NULL || aux->prev->token == PIPE)
             comm_addback(&cmd, init_cmd());
-        else
         aux = aux->next;
     }
-    while (cmd->prev)
-    {
+    printf("command created\n");
+    while (cmd->prev != NULL)
         cmd = cmd->prev;
-    }
+    printf("command rewind\n");
     return (cmd);
 }
 
 t_lexer *redir_add(t_command *cmd, t_lexer *list)
 {
     if (list->token == LESS)
-        cmd->in_files = redir_addback(&cmd->in_files, redir_new(ft_strdup(list->next)));
+        redir_addback(&cmd->in_files, redir_new(ft_strdup(list->next->str)));
     if (list->token == GREAT)
-        cmd->out_files = redir_addback(&cmd->in_files, redir_new(ft_strdup(list->next)));
+        redir_addback(&cmd->out_files, redir_new(ft_strdup(list->next->str)));
     if (list->token == LESS_LESS)
     {
-        cmd->limiter = ft_strdup(list->next);
+        cmd->limiter = ft_strdup(list->next->str);
         cmd->heredoc = 1;
     }
     if (list->token == GREAT_GREAT)
-        cmd->append = ft_strdup(list->next);
+        cmd->append = ft_strdup(list->next->str);
     list = list->next;
     return (list);
 }
@@ -88,14 +87,14 @@ t_command *parser(t_toolbox *tools)
     args = NULL;
     while (aux)
     {
-        if (aux->prev->token == PIPE)
+        if (aux->token == PIPE)
             cmd = cmd->next;
-        else if (aux->token  && aux->token > 1)
+        else if (aux->token > 1)
             aux = redir_add(cmd, aux);
         else if (!cmd->cmd && !aux->token)
             cmd->cmd = ft_strdup(aux->str);
         else
-            lexer_addback(&args, lexer_new(aux->str, 0));
+            lexer_addback(&args, lexer_new(ft_strdup(aux->str), 0));
         aux = aux->next;
     }
     cmd->args = get_args(args);

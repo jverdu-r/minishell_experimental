@@ -13,6 +13,13 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+typedef struct	s_exp
+{
+	char	*str;
+	int		exp;
+	struct s_exp *next;
+	struct s_exp *prev;
+}	t_exp;
 typedef enum	s_token
 {
 	PIPE = 1,
@@ -25,14 +32,13 @@ typedef enum	s_token
 typedef struct  s_redir
 {
     char    *file;
-    struct s_redirection    *next;
-    struct s_redirection    *prev;
+    struct s_redir   *next;
+    struct s_redir   *prev;
 }   t_redir;
 
 typedef struct s_command
 {
     char                *cmd;
-    //t_token             redir;
 	char				*append;
 	int					heredoc;
     char                *limiter;
@@ -46,19 +52,12 @@ typedef struct s_command
     struct s_command    *prev;
 }   t_command;
 
-/*typedef struct	s_sp_cmds
-{
-	t_command			*cmd;
-	struct s_sp_cmds	*next;
-	struct s_sp_cmds	*prev;
-}	t_sp_cmds;
-
 typedef struct s_pipeline
 {
     t_command           *cmd;
     struct s_pipeline   *next;
     struct s_pipeline   *prev;
-}   t_pipeline;*/
+}   t_pipeline;
 
 typedef enum	s_bool
 {
@@ -75,14 +74,14 @@ typedef struct	s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
-/*typedef struct	s_sp_cmds
+typedef struct	s_sp_cmds
 {
 	char				**cmd;
 	int					token;
 	char				*file;
 	struct s_sp_cmds	*next;
 	struct s_sp_cmds	*prev;
-}	t_sp_cmds;*/
+}	t_sp_cmds;
 
 typedef struct	s_toolbox
 {

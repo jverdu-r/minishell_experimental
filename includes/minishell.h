@@ -24,6 +24,8 @@
 #include "libft/libft.h"
 #include "tokens.h"
 #include "structs.h"
+#include "lexer.h"
+#include "parser.h"
 
 //test
 t_command   *cmd_extract(t_lexer *list);
@@ -31,17 +33,6 @@ int check_syntax(t_lexer *tk_list);
 
 //signal functions
 void	signals_workout(void);
-
-//t_lexer functions
-
-void	lexer_addback(t_lexer **head, t_lexer *new);
-void	lexer_add(t_lexer **head, t_lexer *new);
-void	lexer_delone(t_lexer **list);
-void	lexer_free(t_lexer *list);
-void	lexer_show(t_lexer *list); //free list only for testting
-int		lexer_length(t_lexer *list);
-t_lexer	*lexer_new(char	*str, t_token token);
-t_lexer	*lexer_last(t_lexer *list);
 
 //t_sp_cmds functions
 void		sp_cmds_addback(t_sp_cmds **head, t_sp_cmds *new);
@@ -52,16 +43,6 @@ void		sp_cmds_show(t_sp_cmds *list); //frees list  only for testing
 int			sp_cmds_length(t_sp_cmds *list);
 t_sp_cmds	*sp_cmds_new(char **cmd, int token);
 t_sp_cmds	*sp_cmds_last(t_sp_cmds *list);
-
-//parse functions
-t_sp_cmds	*parser(t_toolbox *tools);
-int			file_checker(char *str);
-int			token_reader(t_toolbox *tools);
-int			token_handler(t_toolbox *tools, int i);
-t_token		check_token(char *tk, int i);
-void		check_exp(t_sp_cmds *node, t_toolbox *tools);
-void		cmd_trim(t_sp_cmds *node);
-char		*fully_prompt(char *input, char c);
 
 //loop functions
 int		minishell_loop(t_toolbox *tools);
@@ -74,7 +55,7 @@ char	**envp_dup(char **envp, t_toolbox *tools);
 int		pwd_search(t_toolbox *tools);
 
 //utility functions
-char		*expander(t_toolbox *tools, char *str);
+//char		*expander(t_toolbox *tools, char *str);
 void		free_arr(char **arr);
 int		handle_quotes(char *input);
 int		check_input(t_toolbox *tools);

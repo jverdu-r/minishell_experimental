@@ -56,8 +56,8 @@ int	minishell_loop(t_toolbox *tools)
 				token_reader(tools);
 				if (!check_syntax(tools->lexer_list))
 				{
-					lexer_show(tools->lexer_list);
-					//parser(tools);
+					//lexer_show(tools->lexer_list);
+					parser(tools);
 				}
 					
 			}

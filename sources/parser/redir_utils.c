@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-t_redir *redir_new(char *str, int i)
+t_redir *redir_new(char *str)
 {
     t_redir *new;
 
@@ -38,5 +38,14 @@ void    redir_addback(t_redir **head, t_redir *new)
             aux = aux->next;
         aux->next = new;
         new->prev = aux;
+    }
+}
+
+void    redir_show(t_redir *list, char *str)
+{
+    while (list)
+    {
+        printf("%s: %s\n", str, list->file);
+        list = list->next;
     }
 }

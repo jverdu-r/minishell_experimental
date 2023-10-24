@@ -36,6 +36,7 @@ SRCS	=	sources/main.c \
 			sources/lexer/token_reader.c \
 			sources/lexer/token_utils.c \
 			sources/parser/command_utils.c \
+			sources/parser/redir_utils.c \
 			sources/parser/parser.c \
 			sources/error/errors.c \
 			#sources/parser/parser_utils.c \
