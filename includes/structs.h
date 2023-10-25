@@ -47,7 +47,6 @@ typedef struct s_command
 	int					in_fd;
     t_redir             *in_files;
 	t_redir				*out_files;
-
     struct s_command    *next;
     struct s_command    *prev;
 }   t_command;
@@ -91,7 +90,7 @@ typedef struct	s_toolbox
 	char		*env_rute;
 	char		*pwd;
 	char		*old_pwd;
-	t_sp_cmds	*sp_cmds;
+	t_command	*cmd;
 	t_lexer		*lexer_list;
 }	t_toolbox;
 

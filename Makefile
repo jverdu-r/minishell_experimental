@@ -38,6 +38,7 @@ SRCS	=	sources/main.c \
 			sources/parser/command_utils.c \
 			sources/parser/redir_utils.c \
 			sources/parser/parser.c \
+			sources/parser/handle_redirs.c \
 			sources/error/errors.c \
 			#sources/parser/parser_utils.c \
 			sources/expander/expander.c \

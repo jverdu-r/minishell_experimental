@@ -103,6 +103,5 @@ t_command *parser(t_toolbox *tools)
     }
     while (cmd->prev)
         cmd = cmd->prev;
-    cmd_show(cmd);
     return (cmd);
 }

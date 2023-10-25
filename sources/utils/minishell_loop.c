@@ -23,7 +23,7 @@ void	tools_reload(t_toolbox *tools)
 
 int	tools_load(t_toolbox *tools)
 {
-	tools->sp_cmds = NULL;
+	tools->cmd = NULL;
 	tools->lexer_list = NULL;
 	return (1);
 }
@@ -57,9 +57,11 @@ int	minishell_loop(t_toolbox *tools)
 				if (!check_syntax(tools->lexer_list))
 				{
 					//lexer_show(tools->lexer_list);
-					parser(tools);
-				}
-					
+					tools->cmd = parser(tools);
+					get_fds(tools->cmd);
+					cmd_show(tools->cmd);
+					printf("hola capullin\n");
+				}	
 			}
 			tools_reload(tools);
 		}

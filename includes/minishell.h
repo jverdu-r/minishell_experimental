@@ -17,10 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <limits.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <errno.h>
 #include "libft/libft.h"
 #include "tokens.h"
 #include "structs.h"
