@@ -36,15 +36,14 @@ int	*token_add(char *args, t_lexer **list, int *st_nd)
 			|| check_token(args, st_nd[1]) == GREAT_GREAT)
 	{
 		st_nd[0] = st_nd[1] + 2;
-		st_nd[1] += 2;
+		st_nd[1] += 1;
 	}
 	else
 	{
+		
 		st_nd[0] = st_nd[1] + 1;
 		st_nd[1]++;
 	}
-	if (check_token(args, st_nd[1]))
-		st_nd = token_add(args, list, st_nd);
 	return (st_nd);
 }
 
@@ -67,10 +66,12 @@ void	read_words(char *args, t_lexer **list, t_bool *qt, int *s_n)
 				lexer_addback(list, \
 						lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));
 			}
-			s_n[0] = s_n[1] + 1;
+			s_n[0] = s_n[1];
 		}
 		s_n[1]++;
 	}
+	if (args[s_n[0]] == ' ')
+		s_n[0]++;
 	if (s_n[0] != s_n[1])
 		lexer_addback(list, \
 				lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));

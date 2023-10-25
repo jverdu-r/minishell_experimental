@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:38:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/23 18:38:57 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:19:26 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ t_command   *cmd_list(t_lexer *list)
             comm_addback(&cmd, init_cmd());
         aux = aux->next;
     }
-    printf("command created\n");
     while (cmd->prev != NULL)
         cmd = cmd->prev;
-    printf("command rewind\n");
     return (cmd);
 }
 
@@ -49,42 +47,43 @@ t_lexer *redir_add(t_command *cmd, t_lexer *list)
     return (list);
 }
 
-char    **get_args(t_lexer *list)
+void    get_arg(t_command *cmd, char *str)
 {
-    t_lexer *aux;
-    int     i;
-    char    **args;
+    cmd->args = malloc(sizeof(char *) * 2);
+    if (!cmd->args)
+        cmd->args = NULL;
+    cmd->args[0] = ft_strdup(str);
+    cmd->args[1] = 0;
+}
 
-    aux = list;
+void    get_new_arg(t_command *cmd, char *str)
+{
+    char    **aux;
+    int     i;
+
     i = 0;
-    while(aux)
+    while (cmd->args[i])
+        i++;
+    aux = malloc(sizeof(char *) * (i + 2));
+    i = 0;
+    while (cmd->args[i])
     {
-        aux = aux->next;
+        aux[i] = ft_strdup(cmd->args[i]);
         i++;
     }
-    aux = list;
-    args = malloc(sizeof(char *) * i);
-    if (!args)
-        return (NULL);
-    while(list)
-    {
-        args[i++] = ft_strdup(list->str);
-        list = list->next;
-    }
-    args[i] = 0;
-    lexer_free(aux);
-    return (args);
+    aux[i] = ft_strdup(str);
+    aux[i + 1] = 0;
+    free_arr(cmd->args);
+    cmd->args = aux;
 }
 
 t_command *parser(t_toolbox *tools)
 {
     t_lexer     *aux;
     t_command   *cmd;
-    t_lexer     *args;
 
     aux = tools->lexer_list;
     cmd = cmd_list(aux);
-    args = NULL;
     while (aux)
     {
         if (aux->token == PIPE)
@@ -94,9 +93,16 @@ t_command *parser(t_toolbox *tools)
         else if (!cmd->cmd && !aux->token)
             cmd->cmd = ft_strdup(aux->str);
         else
-            lexer_addback(&args, lexer_new(ft_strdup(aux->str), 0));
+        {
+            if (!cmd->args)
+                get_arg(cmd, aux->str);
+            else
+                get_new_arg(cmd, aux->str);
+        }
         aux = aux->next;
     }
-    cmd->args = get_args(args);
+    while (cmd->prev)
+        cmd = cmd->prev;
+    cmd_show(cmd);
     return (cmd);
 }

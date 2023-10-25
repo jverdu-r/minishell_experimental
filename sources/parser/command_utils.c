@@ -47,6 +47,52 @@ void	comm_addback(t_command **head, t_command *new)
 	}
 }
 
+void	cmd_show(t_command *cmd)
+{
+	t_command	*aux;
+	int			i;
+
+	aux = cmd;
+	while (aux)
+	{
+		printf("command: %s\n", aux->cmd);
+		if (aux->append)
+			printf("append to: %s\n", aux->append);
+		if (aux->heredoc)
+			printf("heredoc on limiter: %s\n", aux->limiter);
+		if (aux->args)
+		{
+			i = 0;
+			while (aux->args[i])
+			{
+				printf("argument[%d]: %s\n", i, aux->args[i]);
+				i++;
+			}
+		}
+		if (aux->out_fd)
+			printf("out fd: %d\n", aux->out_fd);
+		if (aux->in_fd)
+			printf("in fd: %d\n", aux->in_fd);
+		if (aux->out_files)
+		{
+			while (aux->out_files)
+			{
+				printf("out_file: %s\n", aux->out_files->file);
+				aux->out_files = aux->out_files->next;
+			}
+		}
+		if (aux->in_files)
+		{
+			while (aux->in_files)
+			{
+				printf("in_file: %s\n",aux->in_files->file);
+				aux->in_files = aux->in_files->next;
+			}
+		}
+		aux = aux->next;
+	}
+}
+
 void	cmd_free(t_command *cmd) //need a rework
 {
 	while (cmd->next)

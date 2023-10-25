@@ -29,4 +29,5 @@ char		*fully_prompt(char *input, char c);
 t_redir     *redir_new(char *str);
 void        redir_addback(t_redir **head, t_redir *new);
 void        redir_show(t_redir *list, char *str);
+void	    cmd_show(t_command *cmd);
 #endif
