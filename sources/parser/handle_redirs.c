@@ -26,42 +26,44 @@
         return (aux = ft_strjoin(str, ": Permission denied"));
 
 }*/
-void    get_fds(t_command *raw_cmd)
+void    get_fds(t_command *cmd)
 {
-    t_command   *cmd;
-    t_redir     *aux;
-    
-    cmd = raw_cmd;
-    while (cmd->next)
+    t_redir     *in_files;
+    t_redir     *out_files;
+
+    while (cmd)
     {
-        if (cmd->out_files->file)
-        {
-            aux = cmd->out_files;
-            while (aux)
-            {
-                cmd->out_fd = open(aux->file, O_CREAT | O_WRONLY | O_TRUNC);
-                close(cmd->in_fd);
-                aux = aux->next;
-                printf("hola capullin\n");
-            }
-        }
         if (cmd->in_files)
         {
-            aux = cmd->in_files;
-            while (aux)
+            in_files = cmd->in_files;
+            while (in_files)
             {
-                if (access(aux->file, R_OK) == -1)
+                if (access(in_files->file, R_OK) == -1)
                 {
                     if (errno == EACCES)
-                        error_msg("Access denied");
+                        error_msg("Access denied\n");
                     else if (errno == ENOENT)
-                        error_msg("File does not exist");
+                        error_msg("File does not exist\n");
                     else
-                        error_msg("Access error");
+                        error_msg("Access error\n");
                 }
-                aux = aux->next;
+                in_files = in_files->next;
             }
         }
-        cmd = cmd->next;
+        if (cmd->out_files)
+        {
+            out_files = cmd->out_files;
+            while (out_files)
+            {
+                cmd->out_fd = open(out_files->file, O_CREAT | O_WRONLY | O_TRUNC);
+                close(cmd->out_fd);
+                out_files = out_files->next;
+            }
+
+        }
+        if (cmd->next)
+            cmd = cmd->next;
+        else
+            break;
     }
 }

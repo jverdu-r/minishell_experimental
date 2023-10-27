@@ -19,6 +19,7 @@ void	tools_reload(t_toolbox *tools)
 		free(tools->args);
 	tools->args = NULL;
 	tools->lexer_list = NULL;
+	tools->cmd->out_fd = 0;
 }
 
 int	tools_load(t_toolbox *tools)
@@ -47,7 +48,9 @@ int	minishell_loop(t_toolbox *tools)
 		if (!tools->args && exit == 0)
 			return (exit_code());
 		else if (tools->args && ft_strcmp(tools->args, "") == 0)
+		{
 			free(tools->args);
+		}
 		else if (tools->args)
 		{
 			add_history(tools->args);
@@ -56,11 +59,9 @@ int	minishell_loop(t_toolbox *tools)
 				token_reader(tools);
 				if (!check_syntax(tools->lexer_list))
 				{
-					//lexer_show(tools->lexer_list);
 					tools->cmd = parser(tools);
 					get_fds(tools->cmd);
 					cmd_show(tools->cmd);
-					printf("hola capullin\n");
 				}	
 			}
 			tools_reload(tools);
