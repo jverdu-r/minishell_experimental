@@ -19,7 +19,9 @@ void	tools_reload(t_toolbox *tools)
 		free(tools->args);
 	tools->args = NULL;
 	tools->lexer_list = NULL;
-	tools->cmd->out_fd = 0;
+	if (tools->cmd)
+		cmd_free(tools->cmd);
+	tools->cmd = NULL;
 }
 
 int	tools_load(t_toolbox *tools)

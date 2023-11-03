@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/09 10:59:57 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:21:47 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,6 @@ int check_syntax(t_lexer *tk_list);
 //signal functions
 void	signals_workout(void);
 
-//t_sp_cmds functions
-void		sp_cmds_addback(t_sp_cmds **head, t_sp_cmds *new);
-void		sp_cmds_add(t_sp_cmds **head, t_sp_cmds *new);
-void		sp_cmds_delone(t_sp_cmds **list);
-void		sp_cmds_free(t_sp_cmds *list);
-void		sp_cmds_show(t_sp_cmds *list); //frees list  only for testing
-int			sp_cmds_length(t_sp_cmds *list);
-t_sp_cmds	*sp_cmds_new(char **cmd, int token);
-t_sp_cmds	*sp_cmds_last(t_sp_cmds *list);
-
 //loop functions
 int		minishell_loop(t_toolbox *tools);
 int		tools_load(t_toolbox *tools);
@@ -70,9 +60,9 @@ int		error_msg(char *msg);
 int		error_token(t_token token);
 
 //built-ins funcion
-void	ft_executor(t_sp_cmds *exec_list, t_toolbox *tools);
+//void	ft_executor(t_sp_cmds *exec_list, t_toolbox *tools);
 //  echo
-void	ft_echo(t_sp_cmds *sp_cmds);
+//void	ft_echo(t_sp_cmds *sp_cmds);
 void	print_arguments(char **arg, int i);
 //  pwd
 int		ft_pwd(void);

@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:25:27 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/17 10:25:30 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:14:40 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,6 @@ typedef struct s_command
     struct s_command    *prev;
 }   t_command;
 
-typedef struct s_pipeline
-{
-    t_command           *cmd;
-    struct s_pipeline   *next;
-    struct s_pipeline   *prev;
-}   t_pipeline;
-
 typedef enum	s_bool
 {
 	FALSE = 0,
@@ -73,15 +66,6 @@ typedef struct	s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
-typedef struct	s_sp_cmds
-{
-	char				**cmd;
-	int					token;
-	char				*file;
-	struct s_sp_cmds	*next;
-	struct s_sp_cmds	*prev;
-}	t_sp_cmds;
-
 typedef struct	s_toolbox
 {
 	char		*args;
@@ -93,13 +77,5 @@ typedef struct	s_toolbox
 	t_command	*cmd;
 	t_lexer		*lexer_list;
 }	t_toolbox;
-
-typedef struct	s_p_toolbox
-{
-	t_lexer		*lexer_list;
-	t_lexer		*redirections;
-	int			num_redirections;
-	t_toolbox	*tools;
-}	t_p_toolbox;
 
 #endif

@@ -6,7 +6,7 @@
 #    By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2023/10/09 10:59:01 by jverdu-r         ###   ########.fr        #
+#    Updated: 2023/11/03 17:10:11 by jverdu-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,7 @@ SRCS	=	sources/main.c \
 			sources/parser/parser.c \
 			sources/parser/handle_redirs.c \
 			sources/error/errors.c \
-			#sources/parser/parser_utils.c \
-			sources/expander/expander.c \
+			#sources/expander/expander.c \
 			#sources/built-ins/echo.c \
 			#sources/built-ins/executor.c \
 			#sources/built-ins/pwd.c \

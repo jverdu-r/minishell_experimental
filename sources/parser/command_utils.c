@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:48:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/17 12:10:59 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:31:16 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	comm_addback(t_command **head, t_command *new)
 void	cmd_show(t_command *cmd)
 {
 	t_command	*aux;
+	t_redir		*in_aux;
+	t_redir		*out_aux;
 	int			i;
 
 	aux = cmd;
@@ -75,51 +77,52 @@ void	cmd_show(t_command *cmd)
 			printf("in fd: %d\n", aux->in_fd);
 		if (aux->out_files)
 		{
-			while (aux->out_files)
+			out_aux = aux->out_files;
+			while (out_aux)
 			{
-				printf("out_file: %s\n", aux->out_files->file);
-				aux->out_files = aux->out_files->next;
+				printf("out_file: %s\n", out_aux->file);
+				out_aux = out_aux->next;
 			}
 		}
 		if (aux->in_files)
 		{
-			while (aux->in_files)
+			in_aux = aux->in_files;
+			while (in_aux)
 			{
-				printf("in_file: %s\n",aux->in_files->file);
-				aux->in_files = aux->in_files->next;
+				printf("in_file: %s\n", in_aux->file);
+				in_aux = in_aux->next;
 			}
 		}
 		aux = aux->next;
 	}
 }
 
-void	cmd_free(t_command *cmd) //need a rework
+void	scmd_free(t_command *cmd)
+{
+	cmd->out_fd = 0;
+	cmd->in_fd = 0;
+	if (cmd->cmd)
+		free(cmd->cmd);
+	if (cmd->args)
+		free_arr(cmd->args);
+	if (cmd->limiter)
+		free(cmd->limiter);
+	if (cmd->append)
+		free(cmd->append);
+	if (cmd->in_files != NULL)
+		redir_free(cmd->in_files);
+	if (cmd->out_files != NULL)
+		redir_free(cmd->out_files);
+	free(cmd);
+}
+
+void	cmd_free(t_command *cmd)
 {
 	while (cmd->next)
 	{
-		if (cmd->cmd)
-			free(cmd->cmd);
-		if (cmd->args)
-			free_arr(cmd->args);
-		if (cmd->limiter)
-			free(cmd->limiter);
-		/*if (cmd->file)
-		 	free(cmd->file);*/
 		cmd = cmd->next;
-		free(cmd->prev);
+		scmd_free(cmd->prev);
 		cmd->prev = NULL;
 	}
-	if (!cmd->next)
-	{
-		if (cmd->cmd)
-			free(cmd->cmd);
-		if (cmd->args)
-			free_arr(cmd->args);
-		if (cmd->limiter)
-			free(cmd->limiter);
-		/*if (cmd->file)
-			free(cmd->file);*/
-	}
-	free (cmd);
+	scmd_free(cmd);
 }
-
