@@ -17,7 +17,7 @@
 #include "structs.h"
 #include "minishell.h"
 
-void    *expander(t_command *cmd, t_toolbox *tools);
-t_exp   *exp_new(char *raw, char exp);
-void    exp_lst_addback(t_exp **head, t_exp *new);
+void    expander(t_toolbox *tools);
+char    *exp_word(char *str, char **env);
+char	*arr_join(char **arr);
 #endif
