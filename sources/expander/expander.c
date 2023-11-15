@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:51:06 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/09 15:51:09 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:33:55 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char    **exp_words(char **words, char  **env)
             printf("postsubstr _: %s\n", arr[i]);
             i++;
         }
+	}
         free(aux);
     return (arr);
 }
