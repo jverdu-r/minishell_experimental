@@ -21,7 +21,7 @@ t_cmds	*parser_new(char **cmd, int token)
 		return (NULL);
 	new->cmd = cmd;
 //	new->builtins = builtin
-	new->redirs = token;
+	new->redir = token;
 //	new->file_name	= lexer_file(&lexer);
 //	new->redirections = lex_redirect(lexer);
 	new->next = NULL;

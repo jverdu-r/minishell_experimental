@@ -28,3 +28,12 @@ char	*fully_prompt(char *input, char c)
 		}
 	return (input);
 }
+
+t_bool	switch_bool(t_bool bool)
+{
+	if (bool == FALSE)
+		bool = TRUE;
+	else
+		bool = FALSE;
+	return (bool);
+}

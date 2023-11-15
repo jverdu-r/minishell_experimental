@@ -52,7 +52,7 @@ typedef struct	s_cmds
 {
 	char			**cmd;
 	//	builtins site for  include builtins
-	t_token			redirs;
+	t_token			redir;
 	//char			*file_name;
 	//t_lexer			*redirections;
 	struct s_cmds	*next;

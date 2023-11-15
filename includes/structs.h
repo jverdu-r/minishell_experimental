@@ -13,13 +13,6 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-typedef struct	s_exp
-{
-	char	*str;
-	int		exp;
-	struct s_exp *next;
-	struct s_exp *prev;
-}	t_exp;
 typedef enum	s_token
 {
 	PIPE = 1,

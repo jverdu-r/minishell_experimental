@@ -20,15 +20,6 @@ int	is_white_space(char c)
 	return (0);
 }
 
-t_bool	switch_bool(t_bool bool)
-{
-	if (bool == FALSE)
-		bool = TRUE;
-	else
-		bool = FALSE;
-	return (bool);
-}
-
 int	*token_add(char *args, t_lexer **list, int *st_nd)
 {
 	lexer_addback(list, lexer_new(NULL, check_token(args, st_nd[1])));

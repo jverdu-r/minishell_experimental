@@ -28,6 +28,7 @@
 #include "structs.h"
 #include "lexer.h"
 #include "parser.h"
+#include "expander.h"
 
 //test
 t_command   *cmd_extract(t_lexer *list);

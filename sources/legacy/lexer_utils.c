@@ -84,8 +84,8 @@ void show_parser(t_cmds	*cmds)
 				x++;
 			}
 		}
-		else if (tmp->redirs > 0)
-			printf("%d ", tmp->redirs);
+		else if (tmp->redir > 0)
+			printf("%d ", tmp->redir);
 		tmp = tmp->next;
 	}
 	printf("\n");

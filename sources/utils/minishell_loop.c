@@ -62,6 +62,7 @@ int	minishell_loop(t_toolbox *tools)
 				if (!check_syntax(tools->lexer_list))
 				{
 					tools->cmd = parser(tools);
+					expander(tools);
 					get_fds(tools->cmd);
 					cmd_show(tools->cmd);
 				}	
