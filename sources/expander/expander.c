@@ -5,151 +5,161 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 17:57:59 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/24 17:58:01 by jverdu-r         ###   ########.fr       */
+/*   Created: 2023/11/09 15:51:06 by jverdu-r          #+#    #+#             */
+/*   Updated: 2023/11/09 15:51:09 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	var_search(char **gvars, char *var)
+int     word_count(char *str)
 {
-	int	pos;
+    int     i;
+    int     wd;
+    t_bool  qt;
 
-	pos = 0;
-	while (gvars[pos])
-	{
-		if (ft_strnstr(gvars[pos], var, ft_strlen(var)))
-			return (pos);
-		pos++;
-	}
-	return (-1);
-}
-
-char	*extract_var(char **vars, char *str)
-{
-	int		part;
-	int		var_pos;
-	char	*var;
-	char	**s_var;
-
-	part = 1;
-	var = ft_strjoin(ft_substr(str, 1, ft_strlen(str) - 1), '=');
-	var_pos = var_search(vars, var);
-	if (var_pos >= 0)
-	{
-		s_var = ft_split(vars[var_pos], '=');
-		free(var);
-		var = ft_strdup(s_var[part]);
-		free_arr(s_var);
-		return (var);
-	}
-	else
-		return (NULL);
-}
-
-char    *paste_str(t_exp *list, char **env)
-{
-    char    *str;
-
-    str = NULL;
-    while (list)
+    if (!str)
+        return(0);
+    else
     {
-        if (list->exp == '$')
-            str = ft_strjoin(str, extract_var(env, list->str));
+        i = 0;
+        wd = 1;
+        qt = FALSE;
+        while (str[i])
+        {
+            if (str[i] == '\'' || str[i] == '\"')
+            {
+                qt = switch_bool(qt);
+                if (qt == TRUE)
+                    wd++;
+            }
+            i++;
+        }
+        return(wd);
+    }
+}
+
+char    **exp_words(char **words, char  **env)
+{
+    char    **arr;
+    char    *aux;
+    int     i;
+
+    i = 0;
+    while (words[i])
+        i++;
+    arr = malloc(sizeof(char *) * (i + 1));
+    i = 0;
+    while (words[i])
+    {
+        if (words[i][0] == '\"')
+        {
+            aux = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
+            arr[i] = exp_word(aux, env);
+            printf("postsubstr \": %s\n", arr[i]);
+            i++;
+        }
+        else if (words[i][0] == '\'')
+        {
+            aux = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
+            arr[i] = ft_strdup(aux);
+            printf("postsubstr ': %s\n", arr[i]);
+            i++;
+        }
         else
-            str = ft_strjoin(str, list->str);
-        list = list->next;
-    }
-    return (str);
+        {
+            aux = ft_strdup(words[i]);
+            arr[i] = exp_word(aux, env);
+            printf("postsubstr _: %s\n", arr[i]);
+            i++;
+        }
+        free(aux);
+    return (arr);
 }
 
-char    *expand(char *str, char **env)
+int extract_qt(char *str, int i, char **words, int wd)
 {
-    t_exp   *list;
+    int j;
+
+    j = 1;
+    while (str[i + j] != str[i] && str[i + j])
+        j++;
+    words[wd] = ft_substr(str, i, j + 1);
+    return (i + j);
+}
+
+char    *split_words(char *str, char **env)
+{
+    char    **words;
+    int     wd;
     int     i;
     int     j;
 
-    list = NULL;
     i = 0;
-    while(str[i])
-    {
-        if (str[i] == '$')
-        {
-            j = 0;
-            while (str[i + j] != ' ' || str[i + j + 1] == '$' && str[i + j])
-                j++;
-            exp_lst_addback(&list, exp_new(ft_substr(str, i, j), str[i]));
-            i += j;
-        }
-        if (str[i] != '$')
-        {
-            j = 0;
-            while (str[i + j] != '$' && str[i + j])
-                j++;
-            exp_lst_addback(&list, exp_new(ft_substr(str, i, j), 'n'));
-            i += j;
-        }
-    }
-    return (paste_str(list, env));
-}
-char    *expansor(t_exp *list, char **env)
-{
-    char *str;
-
-    while (list)
-    {
-        if (list->exp == '\"')
-            list->str = expand(list->str, env);
-        list = list->next;
-    }
-    while (list->prev)
-        list = list->prev;
-    str = list->str;
-    list = list->next;
-    while (list->next)
-    {
-        str = ft_strjoin(str, list->str);
-        list = list->next;
-    }
-    return (str);
-}
-
-char   *check_exp(char *str, char **env)
-{
-    t_exp   *list;
-    int     i;
-    int     j;
-
-    list = NULL;
-    i = 0;
-    while(str[i])
+    j = 0;
+    wd = word_count(str);
+    words = malloc(sizeof(char *) * (wd + 2));
+    wd = 0;
+    while (str[i])
     {
         if (str[i] == '\'' || str[i] == '\"')
         {
-            j = 0;
-            while (str[i + j] != str[i] && str[i + j] && str[i + j])
-                j++;
-            exp_lst_addback(&list, exp_new(ft_substr(str, i, j), str[i]));
-            i += j;
+            i = extract_qt(str, i, words, wd);
+            wd++;
         }
-        if (str[i] != '\'' && str[i] != '\"')
+        else
         {
             j = 0;
-            while (str[i] != '\'' && str[i] != '\"' && str[i + j])
+            while (str[i + j])
+            {
+                if (str[i + j] == '\'' || str[i + j] == '\"')
+                    break;
                 j++;
-            exp_lst_addback(&list, exp_new(ft_substr(str, i, j), 'n'));
+            }
+            words[wd] = ft_substr(str, i, j);
+            if (str[i + j] == '\'' || str[i + j] == '\"')
+                j--;
+            wd++;
             i += j;
         }
+        i++;
     }
-    return (expansor(list, env));
+    words[wd] = 0;
+    words = exp_words(words, env);
+    i = 0;
+    while (words[i])
+    {
+        printf("word[%d]: %s\n", i, words[i]);
+        i++;
+    }
+    return (arr_join(words));
 }
 
-void    *expander(t_command *cmd, t_toolbox *tools)
+void    check_cmd(t_command *raw_cmd, char **env)
 {
+    t_command   *cmd;
+    char    *aux;
+
+    cmd = raw_cmd;
+    aux = split_words(raw_cmd->cmd, env);
+    free(raw_cmd->cmd);
+    cmd->cmd = aux;
+    //cmd->cmd = exp_words(raw_cmd->cmd, env);
+    //cmd->append = exp_words(raw_cmd->append, env);
+    //cmd->limiter = exp_word(raw_cmd->limiter, env);
+    /*cmd->args = exp_args(raw_cmd->args, env);
+    cmd->in_files = exp_redir(raw_cmd->in_files, env);
+    cmd->out_files = exp_redir(raw_cmd->out_files, env);*/
+}
+
+void    expander(t_toolbox *tools)
+{
+    t_command   *cmd;
+
+    cmd = tools->cmd;
     while (cmd)
     {
-        cmd->cmd = check_exp(cmd->cmd, tools->env);
+        check_cmd(cmd, tools->env);
         cmd = cmd->next;
     }
 }

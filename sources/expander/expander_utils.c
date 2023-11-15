@@ -12,30 +12,113 @@
 
 #include "../../includes/minishell.h"
 
-t_exp   *exp_new(char *raw, char exp)
+char	*arr_join(char **arr)
 {
-    t_exp   *new;
+	int		i;
+	char	*str;
+	char	*aux;
 
-    new = malloc(sizeof(t_exp));
-    new->str = raw;
-    new->exp = exp;
-    new->next = NULL;
-    new->prev = NULL;
-    return (new);
+	i = 1;
+	str = ft_strdup(arr[0]);
+	while (arr[i])
+	{
+		aux = str;
+		str = ft_strjoin(aux, arr[i]);
+		free(aux);
+		i++;
+	}
+	return (str);
 }
 
-void    exp_lst_addback(t_exp **head, t_exp *new)
+int		exp_count(char *str)
 {
-    t_exp	*tmp;
+	int	i;
+	int	wd;
 
-	tmp = *head;
-	if (*head == NULL)
-		*head = new;
-	else
+	if (!str)
+		return (0);
+	i = 0;
+	wd = 0;
+	while (str[i])
 	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-		new->prev = tmp;
+		if (str[i] == '$')
+		{
+			while (str[i] == '$' && str[i])
+				i++;
+				wd++;
+		}
+		i++;
 	}
+	if (wd == 0)
+		wd = 1;
+	return (wd);
+}
+
+char	*expnd(char *str, char **env)
+{
+	char	*aux;
+	char	**r_var;
+	int		i;
+
+	aux = ft_strjoin(str, "=");
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strnstr(env[i], aux, ft_strlen(aux)))
+		{
+			r_var = ft_split(env[i], '=');
+			free(aux);
+			aux = ft_strdup(r_var[1]);
+			free_arr(r_var);
+			return(aux);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char    *exp_word(char *str, char **env)
+{
+    char    **arr;
+    int     i;
+	int		j;
+    int		wd;
+
+	i = 0;
+	j = 0;
+	wd = exp_count(str);
+	arr = malloc(sizeof(char *) * (wd + 2));
+	wd = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			j = 0;
+			while (str[i] == '$' && str[i])
+			{
+				i++;
+			}
+			while (str[i + j])
+			{
+				if (str[i + j] == '$' || str[i + j] == ' ')
+					break;
+				j++;
+			}
+			arr[wd] = expnd(ft_substr(str, i, j), env);
+			wd++;
+			i += j;
+		}
+		else
+		{
+			j = 0;
+			while (str[i + j] != '$' && str[i + j])
+				j++;
+			arr[wd] = ft_substr(str, i, j);
+			wd++;
+			i += j;
+		}
+		i++;
+	}
+	arr[wd] = 0;
+	return (arr_join(arr));
 }
