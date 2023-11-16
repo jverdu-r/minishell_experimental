@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.h                                         :+:      :+:    :+:   */
+/*   expander_one.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 17:59:56 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/24 17:59:58 by jverdu-r         ###   ########.fr       */
+/*   Created: 2023/11/16 19:06:57 by jverdu-r          #+#    #+#             */
+/*   Updated: 2023/11/16 19:09:38 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANDER_H
-#define EXPANDER_H
+#include "../../includes/minishell.h"
 
-#include "libft/libft.h"
-#include "structs.h"
-#include "minishell.h"
+void	check_cmd(t_command *raw_cmd, char **env)
+{
+	t_command	*cmd;
+	char		*aux;
 
-void    expander(t_toolbox *tools);
-char    *exp_word(char *str, char **env);
-char	*arr_join(char **arr);
-int     word_count(char *str);
-char    *split_words(char *str, char **env);
-#endif
+	cmd = raw_cmd;
+	aux = split_words(raw_cmd->cmd, env);
+	free(raw_cmd->cmd);
+	cmd->cmd = aux;
+}
+
+void	expander(t_toolbox *tools)
+{
+	t_command	*cmd;
+
+	cmd = tools->cmd;
+	while (cmd)
+	{
+		check_cmd(cmd, tools->env);
+		cmd = cmd->next;
+	}
+}

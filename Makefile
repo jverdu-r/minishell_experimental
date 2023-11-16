@@ -40,8 +40,10 @@ SRCS	=	sources/main.c \
 			sources/parser/parser.c \
 			sources/parser/handle_redirs.c \
 			sources/error/errors.c \
-			sources/expander/expander.c \
-			sources/expander/expander_utils.c \
+			sources/expander/expander_one.c \
+			sources/expander/expander_two.c \
+			sources/expander/expander_utils_one.c \
+			sources/expander/expander_utils_two.c \
 			#sources/built-ins/echo.c \
 			#sources/built-ins/executor.c \
 			#sources/built-ins/pwd.c \
