@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   lim_trimmer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 15:51:06 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/22 17:45:47 by jverdu-r         ###   ########.fr       */
+/*   Created: 2023/11/22 16:43:46 by jverdu-r          #+#    #+#             */
+/*   Updated: 2023/11/22 17:50:43 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	exp_quotes(char **words, char **arr, char **env, int i)
+int	trim_quotes(char **words, char **arr, int i)
 {
-	char	*aux;
-
 	if (words[i][0] == '\"')
 	{
-		aux = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
-		arr[i] = exp_word(aux, env);
-		free(aux);
+		arr[i] = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
 		i++;
 	}
 	else if (words[i][0] == '\'')
 	{
-		aux = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
-		arr[i] = ft_strdup(aux);
-		free(aux);
+		arr[i] = ft_substr(words[i], 1, ft_strlen(words[i]) - 2);
 		i++;
 	}
 	return (i);
 }
 
-char	**exp_words(char **words, char **env)
+char	**get_words(char **words)
 {
 	char	**arr;
-	char	*aux;
 	int		i;
 
 	i = 0;
@@ -47,19 +40,17 @@ char	**exp_words(char **words, char **env)
 	while (words[i])
 	{
 		if (words[i][0] == '\"' || words[i][0] == '\'')
-			i = exp_quotes(words, arr, env, i);
+			i = trim_quotes(words, arr, i);
 		else
 		{
-			aux = ft_strdup(words[i]);
-			arr[i] = exp_word(aux, env);
-			free(aux);
+			arr[i] = ft_strdup(words[i]);
 			i++;
 		}
 	}
 	return (arr);
 }
 
-int	extract_qt(char *str, int *it, char **words)
+int	get_qt(char *str, int *it, char **words)
 {
 	it[1] = 1;
 	while (str[it[0] + it[1]] != str[it[0]] && str[it[0] + it[1]])
@@ -69,7 +60,7 @@ int	extract_qt(char *str, int *it, char **words)
 	return (it[0] + it[1]);
 }
 
-int	extract_nqt(char *str, int *it, char **words)
+int	get_nqt(char *str, int *it, char **words)
 {
 	it[1] = 0;
 	while (str[it[0] + it[1]])
@@ -84,7 +75,7 @@ int	extract_nqt(char *str, int *it, char **words)
 	return (it[0]);
 }
 
-char	*split_words(char *str, char **env)
+char	*split_trim(char *str)
 {
 	char	**words;
 	int		it[3];
@@ -102,12 +93,12 @@ char	*split_words(char *str, char **env)
 	while (it[0] < (int)ft_strlen(str) - 2 && str[it[0]])
 	{
 		if (str[it[0]] == '\'' || str[it[0]] == '\"')
-			it[0] = extract_qt(str, it, words);
+			it[0] = get_qt(str, it, words);
 		else
-			it[0] = extract_nqt(str, it, words);
+			it[0] = get_nqt(str, it, words);
 		it[0]++;
 	}
 	words[it[2]] = 0;
-	res = get_res(words, env);
+	res = get_trim(words);
 	return (res);
 }

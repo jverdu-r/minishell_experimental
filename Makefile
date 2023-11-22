@@ -16,7 +16,7 @@ LIBFT	=	includes/libft/
 
 CC		=	gcc
 
-LIBFT_A	=	$(addprefix $(LIBFT), libft.a)
+LIBFT_A	=	$(addprefix $(LIBFT), libft.a) 
 
 INCLUDE	=	includes -I $(READ)/include
 
@@ -44,6 +44,7 @@ SRCS	=	sources/main.c \
 			sources/expander/expander_two.c \
 			sources/expander/expander_utils_one.c \
 			sources/expander/expander_utils_two.c \
+			sources/expander/lim_trimmer.c \
 			#sources/built-ins/echo.c \
 			#sources/built-ins/executor.c \
 			#sources/built-ins/pwd.c \

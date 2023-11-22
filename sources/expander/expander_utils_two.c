@@ -20,14 +20,15 @@ char	*arr_join(char **arr)
 
 	i = 1;
 	str = ft_strdup(arr[0]);
-	while (arr[i])
+	if (!arr[i])
+		return (str);
+	while (arr && arr[i])
 	{
 		aux = str;
 		str = ft_strjoin(aux, arr[i]);
 		free(aux);
 		i++;
 	}
-	free_arr(arr);
 	return (str);
 }
 
@@ -56,4 +57,28 @@ int	word_count(char *str)
 		}
 		return (wd);
 	}
+}
+
+char	*get_res(char **words, char **env)
+{
+	char	**aux;
+	char	*res;
+
+	aux = exp_words(words, env);
+	res = arr_join(aux);
+	free_arr(words);
+	free_arr(aux);
+	return (res);
+}
+
+char	*get_trim(char **words)
+{
+	char	**aux;
+	char	*res;
+
+	aux = get_words(words);
+	res = arr_join(aux);
+	free_arr(words);
+	free_arr(aux);
+	return (res);
 }

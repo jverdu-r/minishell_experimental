@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:21:11 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/16 19:23:01 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:49:11 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	exp_count(char *str)
 		{
 			while (str[i] == '$' && str[i])
 				i++;
-				wd++;
+			wd++;
 		}
 		i++;
 	}
@@ -57,7 +57,10 @@ char	*expnd(char *str, char **env)
 		}
 		i++;
 	}
-	return ("");
+	free(aux);
+	aux = malloc(sizeof(char) * 1);
+	aux[0] = 0;
+	return (aux);
 }
 
 int	get_dollar(char *str, int *it, char **arr, char **env)
@@ -74,8 +77,6 @@ int	get_dollar(char *str, int *it, char **arr, char **env)
 		j++;
 	}
 	arr[it[2]] = expnd(ft_substr(str, it[0], j), env);
-	if (str[it[0] + j] == '$' || str[it[0] + j] == ' ')
-		it[0]--;
 	it[0] += j;
 	it[2]++;
 	return (it[0]);
@@ -101,21 +102,19 @@ char	*exp_word(char *str, char **env)
 	it[0] = 0;
 	it[1] = 0;
 	it[2] = exp_count(str);
-	arr = malloc(sizeof(char *) * (it[2] + 2));
+	arr = ft_calloc(sizeof(char *), (it[2] + 2));
+	if (!arr)
+		return (NULL);
 	it[2] = 0;
 	while (str[it[0]])
 	{
 		if (str[it[0]] == '$')
 			it[0] = get_dollar(str, it, arr, env);
-		else if (str[it[0]] == ' ')
-		{
-			arr[it[2]] = " ";
-			it[2]++;
-		}
 		else
 			it[0] = get_uncuote(str, it, arr);
 	}
 	arr[it[2]] = 0;
 	res = arr_join(arr);
+	free_arr(arr);
 	return (res);
 }

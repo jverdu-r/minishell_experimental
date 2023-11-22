@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:46:24 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/17 11:53:45 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:34:32 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ int	*token_add(char *args, t_lexer **list, int *st_nd)
 	}
 	else
 	{
-		
 		st_nd[0] = st_nd[1] + 1;
 		st_nd[1]++;
 	}
 	return (st_nd);
+}
+
+void	list_add(t_lexer **list, char *args, int *s_n)
+{
+	lexer_addback(list, \
+			lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));
 }
 
 void	read_words(char *args, t_lexer **list, t_bool *qt, int *s_n)
@@ -49,13 +54,12 @@ void	read_words(char *args, t_lexer **list, t_bool *qt, int *s_n)
 		else if (check_token(args, s_n[1]) && !qt[0] && !qt[1])
 			s_n = token_add(args, list, s_n);
 		else if (is_white_space(args[s_n[1]]) && !qt[0] && !qt[1])
-		{	
+		{
 			if (s_n[0] != s_n[1])
 			{
 				if (args[s_n[0]] == ' ')
 					s_n[0]++;
-				lexer_addback(list, \
-						lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));
+				list_add(list, args, s_n);
 			}
 			s_n[0] = s_n[1];
 		}
@@ -64,23 +68,18 @@ void	read_words(char *args, t_lexer **list, t_bool *qt, int *s_n)
 	if (args[s_n[0]] == ' ')
 		s_n[0]++;
 	if (s_n[0] != s_n[1])
-		lexer_addback(list, \
-				lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));
+		list_add(list, args, s_n);
 }
 
 int	token_reader(t_toolbox *tools)
 {
 	t_bool	qt[2];
 	int		st_nd[2];
-	//t_command	*cmd;
 
 	qt[0] = FALSE;
 	qt[1] = FALSE;
 	st_nd[0] = 0;
 	st_nd[1] = 0;
 	read_words(tools->args, &tools->lexer_list, qt, st_nd);
-	//cmd = cmd_extract(tools->lexer_list);
-	//cmd_show(cmd);
-	//cmd_free(cmd);
 	return (1);
 }

@@ -22,4 +22,9 @@ char    *exp_word(char *str, char **env);
 char	*arr_join(char **arr);
 int     word_count(char *str);
 char    *split_words(char *str, char **env);
+char	*split_trim(char *str);
+char	*get_res(char **words, char **env);
+char	*get_trim(char **words);
+char	**get_words(char **words);
+char	**exp_words(char **words, char **env);
 #endif
