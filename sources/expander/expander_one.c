@@ -37,7 +37,10 @@ void	check_redir(t_redir *red, char **env)
 	aux = red;
 	while (aux)
 	{
-		str = check_str(aux->file, env, 0);
+		if (ft_strlen(aux->file) > 2)
+			str = check_str(aux->file, env, 0);
+		else
+			str = aux->file;
 		aux->file = str;
 		aux = aux->next;
 	}
@@ -55,7 +58,10 @@ char	**check_args(char **args, char **env)
 	i = 0;
 	while (args[i])
 	{
-		aux[i] = check_str(args[i], env, 0);
+		if (ft_strlen(args[i]) > 2)
+			aux[i] = check_str(args[i], env, 0);
+		else
+			aux[i] = args[i];
 		i++;
 	}
 	aux[i] = 0;
@@ -72,8 +78,9 @@ void	expander(t_toolbox *tools)
 	i = 0;
 	while (cmd)
 	{
-		cmd->cmd = check_str(cmd->cmd, tools->env, 0);
-		if (cmd->append)
+		if (ft_strlen(cmd->cmd) > 2)
+			cmd->cmd = check_str(cmd->cmd, tools->env, 0);
+		if (cmd->append && ft_strlen(cmd->append) > 2)
 			cmd->append = check_str(cmd->append, tools->env, 0);
 		if (cmd->args)
 			cmd->args = check_args(cmd->args, tools->env);
@@ -81,7 +88,7 @@ void	expander(t_toolbox *tools)
 			check_redir(cmd->in_files, tools->env);
 		if (cmd->out_files)
 			check_redir(cmd->out_files, tools->env);
-		if (cmd->limiter)
+		if (cmd->limiter && ft_strlen(cmd->limiter) > 2)
 			cmd->limiter = check_str(cmd->limiter, tools->env, 1);
 		cmd = cmd->next;
 	}
