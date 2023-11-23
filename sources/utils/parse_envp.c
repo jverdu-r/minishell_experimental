@@ -50,6 +50,7 @@ char	**st_envp(char **envp)
 		i++;
 	}
 	sorted[i] = 0;
+	i = 0;
 	while (sorted[i])
 	{
 		j = i + 1;

@@ -33,7 +33,7 @@ void	ft_echo(t_command *cmd)
 	i = 0;
 	while (cmd->args[i] && !ft_strncmp(cmd->args[i], "-n", 2))
 	{
-		j = 0;
+		j = 1;
 		while (cmd->args[i][j] && cmd->args[i][j] == 'n')
 			j++;
 		if (j != ft_strlen(cmd->args[i]) && cmd->args[i][j] != 'n')

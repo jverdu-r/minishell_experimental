@@ -6,7 +6,7 @@
 #    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2023/11/23 17:23:01 by daparici         ###   ########.fr        #
+#    Updated: 2023/11/23 19:06:04 by jverdu-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ SRCS	=	sources/main.c \
 
 OBJS	=	$(SRCS:%.c=%.o)
 
-READ	=  	/System/Volumes/Data/Users/daparici/.brew/Cellar/readline/8.2.1
+#READ	=  	/System/Volumes/Data/Users/daparici/.brew/Cellar/readline/8.2.1
+READ	=  	/System/Volumes/Data/Users/jverdu-r/.brew/Cellar/readline/8.2.1
 #READ	=  	/usr/local/Cellar/readline/8.2.1
 
 all:		$(NAME)
