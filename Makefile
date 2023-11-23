@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2023/11/03 17:10:11 by jverdu-r         ###   ########.fr        #
+#    Updated: 2023/11/23 17:23:01 by daparici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,14 +45,18 @@ SRCS	=	sources/main.c \
 			sources/expander/expander_utils_one.c \
 			sources/expander/expander_utils_two.c \
 			sources/expander/lim_trimmer.c \
-			#sources/built-ins/echo.c \
-			#sources/built-ins/executor.c \
-			#sources/built-ins/pwd.c \
-			#sources/built-ins/unset.c 
+			sources/built-ins/echo.c \
+			sources/built-ins/executor.c \
+			sources/built-ins/pwd.c \
+			sources/built-ins/env.c \
+			sources/built-ins/export.c \
+			sources/built-ins/export_utils.c \
+			#sources/built-ins/unset.c \
+			
 
 OBJS	=	$(SRCS:%.c=%.o)
 
-READ	=  	/System/Volumes/Data/Users/jverdu-r/.brew/Cellar/readline/8.2.1
+READ	=  	/System/Volumes/Data/Users/daparici/.brew/Cellar/readline/8.2.1
 #READ	=  	/usr/local/Cellar/readline/8.2.1
 
 all:		$(NAME)

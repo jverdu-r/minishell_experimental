@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:33:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/08/14 09:05:36 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:48:34 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,18 @@ char	**st_envp(char **envp)
 	int		j;
 
 	i = 0;
-	sorted = envp;
+	while (envp[i])
+		i++;
+	sorted = ft_calloc(sizeof(char *), i + 1);
+	if (!sorted)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		sorted[i] = envp[i];
+		i++;
+	}
+	sorted[i] = 0;
 	while (sorted[i])
 	{
 		j = i + 1;
@@ -59,7 +70,7 @@ char	**st_envp(char **envp)
 
 void	show_env(t_toolbox *tools)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	printf("\n---unsorted env---\n");
@@ -101,7 +112,5 @@ char	**envp_dup(char	**envp, t_toolbox *tools)
 		i++;
 	}
 	tools->env = tmp;
-	tools->sort_env = st_envp(envp);
-	//show_env(tools); //for testing;
 	return (tmp);
 }

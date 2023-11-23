@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:17:51 by daparici          #+#    #+#             */
-/*   Updated: 2023/09/09 17:57:10 by daparici         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:20:27 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,26 @@ void	print_arguments(char **arg, int i)
 	}
 }
 
-void	ft_echo(t_sp_cmds *sp_cmds)
+void	ft_echo(t_command *cmd)
 {
 	int		flag;
 	size_t	i;
 	size_t	j;
 
 	flag = 0;
-	i = 1;
-	while (sp_cmds->cmd[i] && !ft_strncmp(sp_cmds->cmd[i], "-n", 2))
+	i = 0;
+	while (cmd->args[i] && !ft_strncmp(cmd->args[i], "-n", 2))
 	{
-		j = 1;
-		while (sp_cmds->cmd[i][j] && sp_cmds->cmd[i][j] == 'n')
+		j = 0;
+		while (cmd->args[i][j] && cmd->args[i][j] == 'n')
 			j++;
-		if (j != ft_strlen(sp_cmds->cmd[i]) && sp_cmds->cmd[i][j] != 'n')
+		if (j != ft_strlen(cmd->args[i]) && cmd->args[i][j] != 'n')
 			break ;
 		flag = 1;
 		i++;
 	}
-	if (sp_cmds->cmd[i])
-		print_arguments(sp_cmds->cmd, i);
+	if (cmd->args[i])
+		print_arguments(cmd->args, i);
 	if (flag == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 }
