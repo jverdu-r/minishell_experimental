@@ -46,7 +46,7 @@ void	check_redir(t_redir *red, char **env)
 	}
 }
 
-char	**check_args(char **args, char **env)
+char	**check_args(char **args, char **env, int t)
 {
 	int		i;
 	char	**aux;
@@ -59,7 +59,7 @@ char	**check_args(char **args, char **env)
 	while (args[i])
 	{
 		if (ft_strlen(args[i]) > 2)
-			aux[i] = check_str(args[i], env, 0);
+			aux[i] = check_str(args[i], env, t);
 		else
 			aux[i] = args[i];
 		i++;
@@ -83,13 +83,13 @@ void	expander(t_toolbox *tools)
 		if (cmd->append && ft_strlen(cmd->append) > 2)
 			cmd->append = check_str(cmd->append, tools->env, 0);
 		if (cmd->args)
-			cmd->args = check_args(cmd->args, tools->env);
+			cmd->args = check_args(cmd->args, tools->env, 0);
 		if (cmd->in_files)
 			check_redir(cmd->in_files, tools->env);
 		if (cmd->out_files)
 			check_redir(cmd->out_files, tools->env);
-		if (cmd->limiter && ft_strlen(cmd->limiter) > 2)
-			cmd->limiter = check_str(cmd->limiter, tools->env, 1);
+		if (cmd->limiter)
+			cmd->limiter = check_args(cmd->limiter, tools->env, 1);
 		cmd = cmd->next;
 	}
 }

@@ -34,7 +34,7 @@ typedef struct s_command
     char                *cmd;
 	char				*append;
 	int					heredoc;
-    char                *limiter;
+    char                **limiter;
     char                **args;
 	int					out_fd;
 	int					in_fd;

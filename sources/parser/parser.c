@@ -38,8 +38,11 @@ t_lexer	*redir_add(t_command *cmd, t_lexer *list)
 		redir_addback(&cmd->out_files, redir_new(list->next->str));
 	if (list->token == LESS_LESS)
 	{
-		cmd->limiter = ft_strdup(list->next->str);
-		cmd->heredoc = 1;
+		printf("adding heredoc\n");
+		cmd->limiter = lim_add(cmd->limiter, \
+			cmd->heredoc, list->next->str);
+		cmd->heredoc++;
+		printf("heredoc added\n");
 	}
 	if (list->token == GREAT_GREAT)
 		cmd->append = ft_strdup(list->next->str);

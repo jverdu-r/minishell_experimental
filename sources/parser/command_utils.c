@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:48:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/22 17:38:18 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:01:19 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,19 @@ void	cmd_show(t_command *cmd)
 	aux = cmd;
 	while (aux)
 	{
-		printf("command: %s\n", aux->cmd);
+		if (aux->cmd)
+			printf("command: %s\n", aux->cmd);
 		if (aux->append)
 			printf("append to: %s\n", aux->append);
-		if (aux->heredoc)
-			printf("heredoc on limiter: %s\n", aux->limiter);
+		if (aux->limiter)
+		{
+			i = 0;
+			while (cmd->limiter[i])
+			{
+				printf("heredoc[%d] with limiter: %s\n", i, aux->limiter[i]);
+				i++;
+			}
+		}
 		if (aux->args)
 		{
 			i = 0;
@@ -106,7 +114,7 @@ void	scmd_free(t_command *cmd)
 	if (cmd->args)
 		free_arr(cmd->args);
 	if (cmd->limiter)
-		free(cmd->limiter);
+		free_arr(cmd->limiter);
 	if (cmd->append)
 		free(cmd->append);
 	if (cmd->in_files != NULL)

@@ -30,4 +30,5 @@ void        redir_free(t_redir *redir);
 void	    cmd_show(t_command *cmd);
 void	    cmd_free(t_command *cmd);
 void        get_fds(t_command *cmd);
+char	    **lim_add(char **limts, int lim, char *str);
 #endif
