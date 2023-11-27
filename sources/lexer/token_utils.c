@@ -12,6 +12,22 @@
 
 #include "../../includes/minishell.h"
 
+void	check_lstr(t_lexer *list)
+{
+	char	*aux;
+
+	if (ft_strlen(list->str) == 2)
+	{
+		if (list->str[0] == '\'' || list->str[0] == '\"')
+		{
+			aux = malloc(sizeof(char *) * 1);
+			aux[0] = 0;
+			free(list->str);
+			list->str = aux;
+		}
+	}
+}
+
 int	check_syntax(t_lexer *tk_list)
 {
 	t_lexer	*list;
@@ -19,6 +35,8 @@ int	check_syntax(t_lexer *tk_list)
 	list = tk_list;
 	while (list)
 	{
+		if (list->str)
+			check_lstr(list);
 		if (list->token)
 		{
 			if (!list->next->str && list->token != PIPE)
