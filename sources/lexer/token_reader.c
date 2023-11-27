@@ -20,66 +20,60 @@ int	is_white_space(char c)
 	return (0);
 }
 
-int	*token_add(char *args, t_lexer **list, int *st_nd)
+int		get_quoted(char *args, t_lexer **list, int cr)
 {
-	lexer_addback(list, lexer_new(NULL, check_token(args, st_nd[1])));
-	if (check_token(args, st_nd[1]) == LESS_LESS \
-			|| check_token(args, st_nd[1]) == GREAT_GREAT)
-	{
-		st_nd[0] = st_nd[1] + 2;
-		st_nd[1] += 1;
-	}
-	else
-	{
-		st_nd[0] = st_nd[1] + 1;
-		st_nd[1]++;
-	}
-	return (st_nd);
+	int	ct;
+
+	ct = 1;
+	while (args[cr + ct] && args[cr + ct] != args[cr])
+		ct++;
+	lexer_addback(list, 
+		lexer_new(ft_substr(args, cr, ct + 1), 0));
+	cr += ct + 1;
+	return (cr);
 }
 
-void	list_add(t_lexer **list, char *args, int *s_n)
+int	get_unquoted(char *args, t_lexer **list, int cr)
 {
-	lexer_addback(list, \
-			lexer_new(ft_substr(args, s_n[0], s_n[1] - s_n[0]), 0));
+	int	ct;
+
+	ct = 0;
+	while (args[cr + ct] && !is_white_space(args[cr + ct]) && \
+		!check_token(args, cr + ct))
+		ct++;
+	lexer_addback(list, 
+		lexer_new(ft_substr(args, cr, ct), 0));
+	cr += ct;
+	return (cr);
 }
 
-void	read_words(char *args, t_lexer **list, t_bool *qt, int *s_n)
+void	read_words(char *args, t_lexer **list)
 {
-	while (args[s_n[1]])
+	int	cr;
+
+	cr = 0;
+	while (args[cr])
 	{
-		if (args[s_n[1]] == '\'' && !qt[1])
-			qt[0] = switch_bool(qt[0]);
-		else if (args[s_n[1]] == '\"' && !qt[0])
-			qt[1] = switch_bool(qt[1]);
-		else if (check_token(args, s_n[1]) && !qt[0] && !qt[1])
-			s_n = token_add(args, list, s_n);
-		else if (is_white_space(args[s_n[1]]) && !qt[0] && !qt[1])
+		if (args[cr] == '\"' || args[cr] == '\'')
+			cr = get_quoted(args, list, cr);
+		else if (check_token(args, cr))
 		{
-			if (s_n[0] != s_n[1])
-			{
-				if (args[s_n[0]] == ' ')
-					s_n[0]++;
-				list_add(list, args, s_n);
-			}
-			s_n[0] = s_n[1];
+			lexer_addback(list, 
+				lexer_new(NULL, check_token(args, cr)));
+			if (check_token(args, cr) == GREAT_GREAT || check_token(args, cr) == LESS_LESS)
+				cr = cr + 2;
+			else
+				cr++;
 		}
-		s_n[1]++;
+		else if (is_white_space(args[cr]))
+			cr++;
+		else
+			cr = get_unquoted(args, list, cr);
 	}
-	if (args[s_n[0]] == ' ')
-		s_n[0]++;
-	if (s_n[0] != s_n[1])
-		list_add(list, args, s_n);
 }
 
 int	token_reader(t_toolbox *tools)
 {
-	t_bool	qt[2];
-	int		st_nd[2];
-
-	qt[0] = FALSE;
-	qt[1] = FALSE;
-	st_nd[0] = 0;
-	st_nd[1] = 0;
-	read_words(tools->args, &tools->lexer_list, qt, st_nd);
-	return (1);
+	read_words(tools->args, &tools->lexer_list);
+	return (0);
 }
