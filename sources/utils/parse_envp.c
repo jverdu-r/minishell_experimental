@@ -25,9 +25,42 @@ int	pwd_search(t_toolbox *tools)
 		if (!ft_strncmp(tools->env[i], "OLDPWD=", 7))
 			tools->old_pwd = ft_substr(tools->env[i],
 					7, ft_strlen(tools->env[i]) - 7);
+		if (!ft_strncmp(tools->env[i], "HOME=", 5))
+			tools->home_dir = ft_substr(tools->env[i],
+					5, ft_strlen(tools->env[i] - 5));
 		i++;
 	}
 	return (i);
+}
+
+char	*get_home(void)
+{
+	char 	*dir;
+	char 	*home;
+	int		i;
+	int		ct;
+
+	dir = getcwd(NULL, 0);
+	i = 0;
+	ct = 0;
+	while (dir[i] && ct <=2)
+	{
+		if (dir[i] == '/')
+			ct++;
+		i++;
+	}
+	home = ft_strjoin("HOME=", ft_substr(dir, 0, i));
+	return (home);
+}
+char	**new_env(void)
+{
+	char **env;
+
+	env = ft_calloc(sizeof(char *), 4);
+	env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	env[1] = get_home();
+	env[3] = 0;
+	return (env);
 }
 
 char	**st_envp(char **envp)
@@ -94,7 +127,6 @@ char	**envp_dup(char	**envp, t_toolbox *tools)
 	char	**tmp;
 	int		i;
 
-	(void)tools;
 	i = 0;
 	while (envp[i])
 		i++;

@@ -36,6 +36,7 @@
 t_command   *cmd_extract(t_lexer *list);
 int check_syntax(t_lexer *tk_list);
 char	**st_envp(char **envp);
+char	**new_env(void);
 
 //signal functions
 void	signals_workout(void);

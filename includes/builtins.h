@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2023/11/23 17:09:38 by daparici         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:42:20 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	export_error(char *cmd_arg);
 int		lenght_to_equal(char *cmd_arg);
 int		check_variable_exist(t_toolbox *tools, char *cmd_arg);
 int		check_parametres(char *cmd_arg);
-
+void	ft_unset(t_toolbox *tools);
+char	**delete_variable(char **env, int i);
 
 #endif

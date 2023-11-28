@@ -28,7 +28,10 @@ int	main(int argc, char **argv, char **envp)
 		printf("Minishell must be executed wihtout arguments");
 		exit(0);
 	}
-	tools.env = envp_dup(envp, &tools);
+	if (envp[0] == 0)
+		tools.env = new_env();
+	else
+		tools.env = envp_dup(envp, &tools);
 	tools_load(&tools);
 	pwd_search(&tools);
 	minishell_loop(&tools);

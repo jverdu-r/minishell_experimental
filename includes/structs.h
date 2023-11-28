@@ -67,6 +67,7 @@ typedef struct	s_toolbox
 	char		*env_rute;
 	char		*pwd;
 	char		*old_pwd;
+	char		*home_dir;
 	t_command	*cmd;
 	t_lexer		*lexer_list;
 }	t_toolbox;
