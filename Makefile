@@ -6,7 +6,7 @@
 #    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2023/11/23 19:06:04 by jverdu-r         ###   ########.fr        #
+#    Updated: 2023/11/28 15:39:36 by jverdu-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ SRCS	=	sources/main.c \
 			sources/built-ins/env.c \
 			sources/built-ins/export.c \
 			sources/built-ins/export_utils.c \
-			#sources/built-ins/unset.c \
+			sources/built-ins/unset.c \
 			
 
 OBJS	=	$(SRCS:%.c=%.o)
