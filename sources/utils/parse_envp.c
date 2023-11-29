@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:33:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/23 18:48:34 by daparici         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:18:33 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,42 +33,45 @@ int	pwd_search(t_toolbox *tools)
 	return (i);
 }
 
-char	*get_home(void)
+char	*get_home(char *dir)
 {
-	char 	*dir;
-	char 	*home;
+	char	*aux;
+	char	*home;
 	int		i;
 	int		ct;
 
-	dir = getcwd(NULL, 0);
 	i = 0;
 	ct = 0;
-	while (dir[i] && ct <=2)
+	while (dir[i] && ct <= 2)
 	{
 		if (dir[i] == '/')
 			ct++;
 		i++;
 	}
-	home = ft_strjoin("HOME=", ft_substr(dir, 0, i));
+	aux = ft_substr(dir, 0, i);
+	home = ft_strjoin("HOME=", aux);
+	free(aux);
 	return (home);
 }
+
 char	**new_env(void)
 {
-	char **env;
+	char	**env;
+	char	*aux;
 
+	aux = getcwd(NULL, 0);
 	env = ft_calloc(sizeof(char *), 4);
-	env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
-	env[1] = get_home();
+	env[0] = ft_strjoin("PWD=", aux);
+	env[1] = get_home(aux);
 	env[3] = 0;
+	free(aux);
 	return (env);
 }
 
 char	**st_envp(char **envp)
 {
 	char	**sorted;
-	char	*aux;
 	int		i;
-	int		j;
 
 	i = 0;
 	while (envp[i])
@@ -83,22 +86,7 @@ char	**st_envp(char **envp)
 		i++;
 	}
 	sorted[i] = 0;
-	i = 0;
-	while (sorted[i])
-	{
-		j = i + 1;
-		while (sorted[j])
-		{
-			if (ft_strcmp(sorted[i], sorted[j]) > 0)
-			{
-				aux = sorted[j];
-				sorted[j] = sorted[i];
-				sorted[i] = aux;
-			}
-			j++;
-		}
-		i++;
-	}
+	sort_arr(sorted);
 	return (sorted);
 }
 

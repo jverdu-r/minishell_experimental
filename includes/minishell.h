@@ -35,8 +35,7 @@
 //test
 t_command   *cmd_extract(t_lexer *list);
 int check_syntax(t_lexer *tk_list);
-char	**st_envp(char **envp);
-char	**new_env(void);
+
 
 //signal functions
 void	signals_workout(void);
@@ -48,9 +47,10 @@ void	tools_reload(t_toolbox *tools);
 
 //enviroment functions
 char	**envp_dup(char **envp, t_toolbox *tools);
-//char	 **st_envp(t_toolbox *tools, char **env);
 int		pwd_search(t_toolbox *tools);
-
+char	**st_envp(char **envp);
+char	**new_env(void);
+void	sort_arr(char **arr);
 //utility functions
 //char		*expander(t_toolbox *tools, char *str);
 void		free_arr(char **arr);

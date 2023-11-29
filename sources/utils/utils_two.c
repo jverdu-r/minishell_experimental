@@ -6,7 +6,7 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 10:53:31 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/22 17:37:15 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:22:57 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,28 @@ t_bool	switch_bool(t_bool bool)
 	else
 		bool = FALSE;
 	return (bool);
+}
+
+void	sort_arr(char **arr)
+{
+	int		i;
+	int		j;
+	char	*aux;
+
+	i = 0;
+	while (arr[i])
+	{
+		j = i + 1;
+		while (arr[j])
+		{
+			if (ft_strcmp(arr[i], arr[j]) > 0)
+			{
+				aux = arr[j];
+				arr[j] = arr[i];
+				arr[i] = aux;
+			}
+			j++;
+		}
+		i++;
+	}
 }
