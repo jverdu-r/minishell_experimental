@@ -33,24 +33,26 @@ int	pwd_search(t_toolbox *tools)
 	return (i);
 }
 
-char	*get_home(char *dir)
+char	*get_home(void)
 {
 	char	*aux;
 	char	*home;
-	int		i;
-	int		ct;
+	char	*dir;
+	int	i[2];
 
-	i = 0;
-	ct = 0;
-	while (dir[i] && ct <= 2)
+	i[0] = 0;
+	i[1] = 0;
+	dir = getcwd(NULL, 0);
+	while (dir[i[0]] && i[1] <= 2)
 	{
-		if (dir[i] == '/')
-			ct++;
-		i++;
+		if (dir[i[0]] == '/')
+			i[1]++;
+		i[0]++;
 	}
-	aux = ft_substr(dir, 0, i);
+	aux = ft_substr(dir, 0, i[0]);
 	home = ft_strjoin("HOME=", aux);
 	free(aux);
+	free(dir);
 	return (home);
 }
 
@@ -60,10 +62,9 @@ char	**new_env(void)
 	char	*aux;
 
 	aux = getcwd(NULL, 0);
-	env = ft_calloc(sizeof(char *), 4);
+	env = ft_calloc(sizeof(char *), 2);
 	env[0] = ft_strjoin("PWD=", aux);
-	env[1] = get_home(aux);
-	env[3] = 0;
+	env[1] = 0;
 	free(aux);
 	return (env);
 }
