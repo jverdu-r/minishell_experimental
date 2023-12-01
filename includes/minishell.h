@@ -50,6 +50,7 @@ char	**envp_dup(char **envp, t_toolbox *tools);
 int		pwd_search(t_toolbox *tools);
 char	**st_envp(char **envp);
 char	**new_env(void);
+char	*get_home(void);
 void	sort_arr(char **arr);
 //utility functions
 //char		*expander(t_toolbox *tools, char *str);
