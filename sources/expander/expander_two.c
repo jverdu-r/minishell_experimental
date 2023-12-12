@@ -99,7 +99,7 @@ char	*split_words(char *str, char **env)
 	if (!words)
 		return (NULL);
 	it[2] = 0;
-	while (it[0] < (int)ft_strlen(str) - 2 && str[it[0]])
+	while (it[0] < (int)ft_strlen(str) && str[it[0]])
 	{
 		if (str[it[0]] == '\'' || str[it[0]] == '\"')
 			it[0] = extract_qt(str, it, words);

@@ -58,7 +58,7 @@ char	**check_args(char **args, char **env, int t)
 	i = 0;
 	while (args[i])
 	{
-		if (ft_strlen(args[i]) > 2)
+		if (ft_strlen(args[i]) >= 2)
 			aux[i] = check_str(args[i], env, t);
 		else
 			aux[i] = args[i];
@@ -78,7 +78,7 @@ void	expander(t_toolbox *tools)
 	i = 0;
 	while (cmd)
 	{
-		if (ft_strlen(cmd->cmd) > 2)
+		if (ft_strlen(cmd->cmd) >= 2)
 			cmd->cmd = check_str(cmd->cmd, tools->env, 0);
 		if (cmd->append && ft_strlen(cmd->append) > 2)
 			cmd->append = check_str(cmd->append, tools->env, 0);
@@ -92,4 +92,5 @@ void	expander(t_toolbox *tools)
 			cmd->limiter = check_args(cmd->limiter, tools->env, 1);
 		cmd = cmd->next;
 	}
+	//redis(cmd);
 }

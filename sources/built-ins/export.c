@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:51:30 by davidaparic       #+#    #+#             */
-/*   Updated: 2023/11/23 18:47:40 by daparici         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:55:42 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**add_variable(char **sort_env, char *cmd_arg)
 	return (copy_env);
 }
 
-void	ft_export(t_toolbox *tools)
+int		ft_export(t_toolbox *tools)
 {
 	int		i;
 	char	**tmp;
@@ -88,4 +88,5 @@ void	ft_export(t_toolbox *tools)
 			i++;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

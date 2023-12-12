@@ -64,6 +64,7 @@ int	minishell_loop(t_toolbox *tools)
 					tools->cmd = parser(tools);
 					expander(tools);
 					get_fds(tools->cmd);
+					redis(tools->cmd);
 					ft_executor(tools);
 					//cmd_show(tools->cmd);
 				}

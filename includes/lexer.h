@@ -24,6 +24,7 @@ void	lexer_delone(t_lexer **list);
 void	lexer_free(t_lexer *list);
 void	lexer_show(t_lexer *list); //free list only for testting
 int		lexer_length(t_lexer *list);
+int	    is_white_space(char c);
 t_lexer	*lexer_new(char	*str, t_token token);
 t_lexer	*lexer_last(t_lexer *list);
 #endif

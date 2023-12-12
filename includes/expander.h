@@ -27,4 +27,5 @@ char	*get_res(char **words, char **env);
 char	*get_trim(char **words);
 char	**get_words(char **words);
 char	**exp_words(char **words, char **env);
+void    redis(t_command *r_cmd);
 #endif

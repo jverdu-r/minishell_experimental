@@ -38,7 +38,8 @@ int	check_variable_exist(t_toolbox *tools, char *cmd_arg)
 	i = 0;
 	while (tools->env[i])
 	{
-		if (!ft_strncmp(tools->env[i], cmd_arg, lenght_to_equal(cmd_arg)))
+		if (!ft_strncmp(tools->env[i], cmd_arg, lenght_to_equal(cmd_arg)) \
+			&& (lenght_to_equal(cmd_arg) == lenght_to_equal(tools->env[i])))
 		{
 			free(tools->env[i]);
 			tools->env[i] = ft_strdup(cmd_arg);
